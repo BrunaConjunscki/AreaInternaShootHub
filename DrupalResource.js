@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BaseResource, BaseRecord } from 'adminjs';
+import { BaseResource, BaseRecord, BaseProperty } from 'adminjs';
 
 class DrupalResource extends BaseResource {
   constructor() {
@@ -8,6 +8,14 @@ class DrupalResource extends BaseResource {
     this.authHeader = {
       Authorization: `Basic ${process.env.DRUPAL_AUTH}`, // Autenticação básica
     };
+  }
+
+  // Modify the properties() method to return an array of BaseProperty
+  properties() {
+    return [
+      new BaseProperty({ path: 'id', isId: true }), // Example: Assuming 'id' is your primary key
+      new BaseProperty({ path: 'title', type: 'string' }),
+    ];
   }
 
   async find(filter, params) {
