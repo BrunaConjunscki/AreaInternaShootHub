@@ -4,53 +4,50 @@ import { BaseResource, BaseRecord, BaseProperty } from 'adminjs';
 class DrupalResource extends BaseResource {
   constructor() {
     super();
-    this.apiUrl = process.env.DRUPAL_API_URL; // URL da API
+    this.apiUrl = process.env.DRUPAL_API_URL;
     this.authHeader = {
-      Authorization: `Basic ${process.env.DRUPAL_AUTH}`, // Autenticação básica
+      Authorization: `Basic ${process.env.DRUPAL_AUTH}`,
     };
   }
 
-  // Modify the properties() method to return an array of BaseProperty
+  id(record) {
+    return record?.cnpj || null;
+  }
+
   properties() {
     return [
-      new BaseProperty({ path: 'id', isId: true }), // Example: Assuming 'id' is your primary key
-      new BaseProperty({ path: 'title', type: 'string' }),
+      new BaseProperty({ path: 'cnpj', isId: true, type: 'string' }),
+      new BaseProperty({ path: 'nome', type: 'string', isTitle: true }),
+      new BaseProperty({ path: 'descricao', type: 'string' }),
+      new BaseProperty({ path: 'cidade', type: 'string' }),
+      new BaseProperty({ path: 'estado', type: 'string' }),
+      new BaseProperty({ path: 'telefone', type: 'string' }),
+      new BaseProperty({ path: 'email', type: 'string' }),
     ];
   }
 
-  async find(filter, params) {
-    const response = await axios.get(`${this.apiUrl}/api/arma`, {
-      headers: this.authHeader,
-    });
-    return response.data.map((item) => new BaseRecord(item, this));
+  async find() {
+    try {
+      const response = await axios.get(`${this.apiUrl}/api/clube-de-tiro?_format=json`, {
+        headers: this.authHeader,
+      });
+      return response.data.map((item) => new BaseRecord(item, this));
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+      return [];
+    }
   }
 
   async findOne(id) {
-    const response = await axios.get(`${this.apiUrl}/node/${id}`, {
-      headers: this.authHeader,
-    });
-    return new BaseRecord(response.data, this);
-  }
-
-  async create(params) {
-    const response = await axios.post(`${this.apiUrl}/node`, params, {
-      headers: { ...this.authHeader, 'Content-Type': 'application/json' },
-    });
-    return new BaseRecord(response.data, this);
-  }
-
-  async update(id, params) {
-    const response = await axios.patch(`${this.apiUrl}/node/${id}`, params, {
-      headers: { ...this.authHeader, 'Content-Type': 'application/json' },
-    });
-    return new BaseRecord(response.data, this);
-  }
-
-  async delete(id) {
-    await axios.delete(`${this.apiUrl}/node/${id}`, {
-      headers: this.authHeader,
-    });
-    return id;
+    try {
+      const response = await axios.get(`${this.apiUrl}/api/clube-de-tiro/${id}?_format=json`, {
+        headers: this.authHeader,
+      });
+      return new BaseRecord(response.data, this);
+    } catch (error) {
+      console.error('Erro ao buscar registro:', error);
+      return null;
+    }
   }
 }
 
