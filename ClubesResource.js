@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BaseResource, BaseRecord, BaseProperty } from 'adminjs';
 
-class DrupalResource extends BaseResource {
+class ClubesResource extends BaseResource {
   constructor() {
     super();
     this.apiUrl = process.env.DRUPAL_API_URL;
@@ -30,6 +30,7 @@ class DrupalResource extends BaseResource {
     ];
   }
 
+  //LISTA VARIOS REGISTROS
   async find(query = {}) {
     try {
       const { limit = 10, offset = 0, ...filterQuery } = query;
@@ -57,6 +58,7 @@ class DrupalResource extends BaseResource {
     }
   }
 
+  //CONTA QUANTOS ITENS EXISTEM NA API E RETORNA O TOTAL
   async count(query = {}) {
     try {
       const response = await axios.get(`${this.apiUrl}/api/clube-de-tiro?_format=json`, {
@@ -69,6 +71,7 @@ class DrupalResource extends BaseResource {
     }
   }
 
+  //BUSCA UM ITEM ESPECIFICO PELO ID
   async findOne(id) {
     try {
       console.log(`Buscando clube com ID/CNPJ: ${id}`);
@@ -82,6 +85,7 @@ class DrupalResource extends BaseResource {
     }
   }
 
+  //ENVIA UMA REQUISICAO POST PARA CRIAR UM NOVO CLUBE DE TIRO
   async create(params) {
     try {
       const response = await axios.post(`${this.apiUrl}/api/clube-de-tiro?_format=json`, params, {
@@ -97,6 +101,7 @@ class DrupalResource extends BaseResource {
     }
   }
 
+  // REQUISICAO PATCH PARA ATUALIZAR UM CLUBE EXISTENTE
   async update(id, params) {
     try {
       const response = await axios.patch(
@@ -116,6 +121,7 @@ class DrupalResource extends BaseResource {
     }
   }
 
+  //REMOVE UM CLUBE DE TIRO
   async delete(id) {
     try {
       await axios.delete(`${this.apiUrl}/api/clube-de-tiro/${id}?_format=json`, {
@@ -129,4 +135,4 @@ class DrupalResource extends BaseResource {
   }
 }
 
-export default DrupalResource;
+export default ClubesResource;

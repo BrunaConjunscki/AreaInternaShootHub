@@ -1,26 +1,32 @@
-// server.js
 import express from 'express';
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
-// import i18next from 'i18next';
-// import Backend from 'i18next-http-backend';
-import DrupalResource from './DrupalResource.js';
+import ClubesResource from './ClubesResource.js';
+import ArmasResource from './ArmasResource.js';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Carrega variáveis do .env
+dotenv.config();
 
-// Registra idioma português antes de inicializar o AdminJS
 const DEFAULT_ADMIN_OPTIONS = {};
 
+const usersNavigation = {
+  name: null,
+  icon: 'Map',
+}
+const armasNavigation = {
+  name: null,
+  icon: 'User',
+}
 // Configuração do AdminJS
 const admin = new AdminJS({
   resources: [
     {
-      resource: new DrupalResource(),
+      resource: new ClubesResource(),
       options: {
         id: 'ClubesDeTiro',
-        navigation: { name: 'Clubes de Tiro', icon: 'Gun' },
+        navigation:usersNavigation,
         name: 'Clubes de Tiro',
+        icon: 'Map',
         properties: {
           cnpj: {
             isTitle: false,
@@ -94,6 +100,51 @@ const admin = new AdminJS({
         },
       },
     },
+    {
+      resource: new ArmasResource(),
+      options: {
+        id: 'Armas',
+        navigation: armasNavigation,
+        name: 'Armas',
+        icon: 'Gun',
+        properties: {
+          nome: {
+            isTitle: true,
+            position: 1,
+            isRequired: true,
+            label: 'Nome',
+            description: 'Nome da arma'
+          }
+        },
+        actions: {
+          new: {
+            isAccessible: true,
+            before: async (request) => {
+              // Podemos realizar validações ou transformações aqui antes de criar
+              return request;
+            },
+          },
+          edit: {
+            isAccessible: true,
+          },
+          delete: {
+            isAccessible: true,
+          },
+          detalhes: {
+            actionType: 'record',
+            icon: 'Information',
+            label: 'Ver detalhes',
+            component: false, // Usará o componente padrão do AdminJS
+            handler: async (request, response, context) => {
+              const { record, resource } = context;
+              return {
+                record: record.toJSON(context.currentAdmin),
+              };
+            },
+          },
+          }
+        }
+      }
   ],
   branding: {
     companyName: 'ShootHub',
@@ -105,7 +156,7 @@ const admin = new AdminJS({
     language: 'en', // Mudando de pt-BR para en (padrão suportado)
     translations: {
       labels: {
-        DrupalResource: 'Clubes de Tiro',
+        ClubesResource: 'Clubes de Tiro',
         'Clubes de Tiro': 'Clubes de Tiro',
         'ClubesDeTiro': 'Clubes de Tiro',
         'Clubes De Tiro': 'Clubes de Tiro',
