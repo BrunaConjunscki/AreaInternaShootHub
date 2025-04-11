@@ -11,7 +11,7 @@ class ArmasResource extends BaseResource {
   }
 
   id(record) {
-    return record?.id || null;
+    return record?.uuid || record?.id || null;
   }
 
   static get name() {
@@ -23,23 +23,23 @@ class ArmasResource extends BaseResource {
       new BaseProperty({ path: 'uuid', isId: true, type: 'string' }),
       new BaseProperty({ path: 'nome', isTitle: true, type: 'string' }),
       new BaseProperty({ path: 'modelo', type: 'string' }),
-      new BaseProperty({ path: 'codigo', type: 'string' }),
-      new BaseProperty({ path: 'descricao', type: 'textarea' }),
       new BaseProperty({ path: 'fabricante', type: 'string' }),
-      new BaseProperty({ path: 'id_fabricante', type: 'string' }),
       new BaseProperty({ path: 'calibre', type: 'string' }),
       new BaseProperty({ path: 'capacidade', type: 'string' }),
+      new BaseProperty({ path: 'tipo_arma', type: 'string' }),
+      new BaseProperty({ path: 'funcionamento', type: 'string' }),
+      new BaseProperty({ path: 'codigo', type: 'string' }),
+      new BaseProperty({ path: 'descricao', type: 'textarea' }),      
+      new BaseProperty({ path: 'id_fabricante', type: 'string' }),    
       new BaseProperty({ path: 'acabamentos', type: 'string' }),
       new BaseProperty({ path: 'altura_total', type: 'string' }),
       new BaseProperty({ path: 'comprimento_total', type: 'string' }),
-      new BaseProperty({ path: 'omprimento_cano', type: 'string' }), // parece ser "comprimento_cano"
+      new BaseProperty({ path: 'comprimento_cano', type: 'string' }), // parece ser "comprimento_cano"
       new BaseProperty({ path: 'largura', type: 'string' }),
       new BaseProperty({ path: 'peso_carregador_vazio', type: 'string' }),
       new BaseProperty({ path: 'peso_gatilho', type: 'string' }),
-      new BaseProperty({ path: 'acao', type: 'string' }),
-      new BaseProperty({ path: 'funcionamento', type: 'string' }),
-      new BaseProperty({ path: 'sistema_de_recarga', type: 'string' }),
-      new BaseProperty({ path: 'tipo_arma', type: 'string' }),
+      new BaseProperty({ path: 'acao', type: 'string' }),     
+      new BaseProperty({ path: 'sistema_de_recarga', type: 'string' }),     
       new BaseProperty({ path: 'mobilidade', type: 'string' }),
       new BaseProperty({ path: 'emprego', type: 'string' }),
       new BaseProperty({ path: 'energia', type: 'string' }),
@@ -59,7 +59,6 @@ class ArmasResource extends BaseResource {
     ];
   }
   
-
   //LISTA VARIOS REGISTROS
   async find(query = {}) {
     try {
@@ -102,15 +101,15 @@ class ArmasResource extends BaseResource {
   }
 
   //BUSCA UM ITEM ESPECIFICO PELO ID
-  async findOne(id) {
+  async findOne(uuid) {
     try {
-      console.log(`Buscando arma com ID: ${id}`);
-      const response = await axios.get(`${this.apiUrl}/api/arma/${id}?_format=json`, {
+      console.log(`Buscando arma com ID/UUID: ${uuid}`);
+      const response = await axios.get(`${this.apiUrl}/api/arma/${uuid}?_format=json`, {
         headers: this.authHeader,
       });
       return new BaseRecord(response.data, this);
     } catch (error) {
-      console.error(`Erro ao buscar registro com ID ${id}:`, error.message);
+      console.error(`Erro ao buscar registro com ID ${uuid}:`, error.message);
       return null;
     }
   }
