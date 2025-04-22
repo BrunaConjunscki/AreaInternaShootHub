@@ -64,7 +64,7 @@ class ArmasResource extends BaseResource {
     try {
       const { limit = 10, offset = 0, ...filterQuery } = query;
 
-      const response = await axios.get(`${this.apiUrl}/api/arma?_format=json`, {
+      const response = await axios.get(`${this.apiUrl}/api/arma/list?_format=json`, {
         headers: this.authHeader,
       });
 
@@ -90,7 +90,7 @@ class ArmasResource extends BaseResource {
   //CONTA QUANTOS ITENS EXISTEM NA API E RETORNA O TOTAL
   async count(query = {}) {
     try {
-      const response = await axios.get(`${this.apiUrl}/api/arma?_format=json`, {
+      const response = await axios.get(`${this.apiUrl}/api/arma/list?_format=json`, {
         headers: this.authHeader,
       });
       return response.data.length;
@@ -131,10 +131,10 @@ class ArmasResource extends BaseResource {
   }
 
   // REQUISICAO PATCH PARA ATUALIZAR UM CLUBE EXISTENTE
-  async update(id, params) {
+  async update(uuid, params) {
     try {
       const response = await axios.patch(
-        `${this.apiUrl}/api/arma/${id}?_format=json`,
+        `${this.apiUrl}/api/arma/${uuid}?_format=json`,
         params,
         {
           headers: {
@@ -145,20 +145,20 @@ class ArmasResource extends BaseResource {
       );
       return new BaseRecord(response.data, this);
     } catch (error) {
-      console.error(`Erro ao atualizar registro com ID ${id}:`, error.message);
+      console.error(`Erro ao atualizar registro com ID ${uuid}:`, error.message);
       throw error;
     }
   }
 
   //REMOVE UMA ARMA
-  async delete(id) {
+  async delete(uuid) {
     try {
-      await axios.delete(`${this.apiUrl}/api/arma/${id}?_format=json`, {
+      await axios.delete(`${this.apiUrl}/api/arma/${uuid}?_format=json`, {
         headers: this.authHeader,
       });
       return true;
     } catch (error) {
-      console.error(`Erro ao excluir registro com ID ${id}:`, error.message);
+      console.error(`Erro ao excluir registro com ID ${uuid}:`, error.message);
       throw error;
     }
   }

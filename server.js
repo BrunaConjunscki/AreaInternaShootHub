@@ -112,7 +112,12 @@ const admin = new AdminJS({
           nome: { isRequired: true, isTitle: true, position: 2, label: 'Nome', description: 'Nome da arma' },
           modelo: {isRequired: true, position: 3, label: 'Modelo', description: 'Modelo da arma' },
           codigo: { isRequired: true,position: 4, label: 'Código', description: 'Código da arma' },
-          descricao: { type: 'textarea', position: 5, label: 'Descrição', description: 'Descrição detalhada' },
+          descricao: { isVisible: {
+            list: false,
+            filter: true,
+            show: true,
+            edit: true
+          }, type: 'textarea', position: 5, label: 'Descrição', description: 'Descrição detalhada' },
           fabricante: { isRequired: true,position: 6, label: 'Fabricante', description: 'Nome do fabricante' },
           id_fabricante: { isVisible: false,position: 7, label: 'ID do Fabricante', description: 'Identificador do fabricante' },
           calibre: { isRequired: true,position: 8, label: 'Calibre', description: 'Calibre da arma' },
