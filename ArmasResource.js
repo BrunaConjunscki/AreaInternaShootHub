@@ -55,7 +55,7 @@ class ArmasResource extends BaseResource {
       new BaseProperty({ path: 'retem_carregador_bidestro', type: 'string' }),
       new BaseProperty({ path: 'trava_percursor', type: 'string' }),
       new BaseProperty({ path: 'trilho_picadily', type: 'string' }),
-      new BaseProperty({ path: 'nid', type: 'string' }),
+      // new BaseProperty({ path: 'nid', type: 'string' }),
     ];
   }
   

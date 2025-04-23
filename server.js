@@ -148,7 +148,12 @@ const admin = new AdminJS({
           retem_carregador_bidestro: { position: 33, label: 'Retém Bidestro', description: 'Retém de carregador para destros e canhotos' },
           trava_percursor: { position: 34, label: 'Trava do Percursor', description: 'Possui trava do percursor' },
           trilho_picadily: { position: 35, label: 'Trilho Picatinny', description: 'Possui trilho para acessórios (Picatinny)' },
-          nid: { position: 36, label: 'NID', description: 'Número de Identificação do Dispositivo' },
+          // nid: { isVisible: {
+          //   list: false,
+          //   filter: true,
+          //   show: true,
+          //   edit: true
+          // },position: 36, label: 'NID', description: 'Número de Identificação do Dispositivo' },
         },
       },
         actions: {
